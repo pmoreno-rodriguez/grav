@@ -270,7 +270,12 @@ class Pipeline extends PropertyObject
             if (preg_match(self::FIRST_FORWARDSLASH_REGEX, $old_url)) {
                 $old_url = ltrim($old_url, '/');
             }
-
+            
+            // Check if it's an @import statement, and if so, don't modify it
+            if (strpos($matches[0], '@import') !== false) {
+                return $matches[0];
+            }
+            
             $new_url = ($local ? $this->base_url : '') . $old_url;
 
             return str_replace($matches[2], $new_url, $matches[0]);
